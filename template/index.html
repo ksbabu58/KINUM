@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KINUM</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'js/style.css' %}">
+    
+</head>
+
+<body>
+
+    <!-- Header -->
+    <header>
+        <div class="header-container">
+            <div class="logo-container">
+                <img src="{% static 'images/logo.jpeg' %}" alt="KINUM Logo" class="logo-img">
+            </div>
+            <nav class="navigation">
+                <ul class="nav-links">
+                    <li><a href="#">Home</a></li>
+                    <li class="dropdown">
+                        <a href="#">Categories</a>
+                        <div class="dropdown-content">
+                            <a href="#">Electronics</a>
+                            <a href="#">Vehicles</a>
+                            <a href="#">Furniture</a>
+                            <a href="#">Real Estate</a>
+                        </div>
+                    </li>
+                    <li><a href="{% url 'sell' %}">Sell</a></li>
+                    <li class="dropdown">
+                        <a href="#">OPTIONS</a>
+                        <div class="dropdown-content">
+                            <a href="#">My Profile</a>
+                          
+                            <a href="#">Orders</a>
+                            <a href="{% url 'logout' %}">Logout</a>
+                        </div>
+                    </li>
+                </ul>
+            </nav>
+            <div class="search-bar">
+                <input type="text" placeholder="Search...">
+                <button>Search</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <div class="hero">
+        <div class="hero-content">
+            <h1>Welcome to KINUM</h1>
+            <p>Find or Sell anything you want</p>
+            <button>Get Started</button>
+        </div>
+    </div>
+
+    <!-- Categories Section -->
+    <section class="categories">
+        <h2>Explore Categories</h2>
+        <div class="category-list">
+            <div class="category" id="electronics">
+                <li class="dropdown"> <a href="#" class="dropbtn">Electronics</a> <div class="dropdown-content"> 
+                    <a href="{% url 'phones_category' %}">Phones</a> 
+                    <a href="{% url 'laptops_category' %}">Laptops</a> 
+                    <a href="{% url 'tablets_category' %}">Tablets</a> </div>
+                
+            </div>
+            <div class="category" id="vehicles-category" onclick="openSubcategory('vehicles')">
+                <h3>Vehicles</h3>
+            </div>
+            <div class="category" id="furniture-category" onclick="openSubcategory('furniture')">
+                <h3>Furniture</h3>
+            </div>
+            <div class="category" id="realestate-category" onclick="openSubcategory('realestate')">
+                <h3>Real Estate</h3>
+            </div>
+            <div class="category" id="Book-category" onclick="openSubcategory('Book')">
+                <h3>Book</h3>
+            </div>
+        </div>
+    </section>
+
+    <marquee>Discount 25%</marquee>
+
+    <!-- Modal for Subcategories -->
+    <div id="subcategory-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal()">×</span>
+            <h2 id="modal-category-title"></h2>
+            <div class="subcategory-list" id="modal-subcategory-list"></div>
+        </div>
+    </div>
+
+    <!-- Featured Ads Section -->
+    <section class="featured-ads">
+        <h2>Featured Ads</h2>
+        <div class="ad-container">
+            <div class="ad">
+                <img src="{% static 'images/Phone.jpeg' %}" alt="Latest Smartphone Deals">
+                <h4>Latest Smartphone Deals</h4>
+                <p>Get the best deals on the latest smartphones! Limited time offer.</p>
+                <a href="{% url 'phones_category' %}"><button>Browse phones</button></a>
+            </div>
+            <div class="ad">
+                <img src="{% static 'images/cars.jpg' %}" alt="Affordable Used Cars">
+                <h4>Affordable Used Cars</h4>
+                <p>Find your perfect used car with a variety of options. Great deals inside!</p>
+                <a href="{% url 'cars_category' %}"><button>Browse Cars</button></a>
+            </div>
+            <div class="ad">
+                <img src="{% static 'images/furniture.jpeg' %}" alt="Modern Furniture Collection">
+                <h4>Modern Furniture Collection</h4>
+                <p>Upgrade your living space with our latest furniture collections. Shop now!</p>
+                <a href="{% url 'furniture_category' %}"><button>Browse couches</button></a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer Section -->
+    <footer>
+        <div class="footer-container">
+            <div class="footer-links">
+                <ul>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Contact</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Terms of Service</a></li>
+                </ul>
+            </div>
+            <div class="footer-social">
+                <ul>
+                    <li><a href="#">Facebook</a></li>
+                    <li><a href="#">Twitter</a></li>
+                    <li><a href="#">Instagram</a></li>
+                    <li><a href="#">LinkedIn</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-info">
+            <p>&copy; 2024 Marketplace. All rights reserved.</p>
+        </div>
+    </footer>
+
+ 
+</body>
+</html>

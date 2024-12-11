@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    {% load static %}
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sell Your Product</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+        }
+
+        header {
+            background-color: #4CAF50;
+            color: white;
+            text-align: center;
+            padding: 1.5rem 0;
+            margin-bottom: 2rem;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2rem;
+        }
+
+        main {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        form div {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        textarea,
+        select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 1rem;
+            box-sizing: border-box;
+        }
+
+        textarea {
+            height: 100px;
+        }
+
+        input[type="file"] {
+            border: none;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        @media (max-width: 600px) {
+            main {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Sell Your Product</h1>
+    </header>
+    <main>
+        <form action="{% url 'add_product' %}" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div>
+                <label for="product-title">Product Title:</label>
+                <input type="text" id="product-title" name="title" placeholder="Enter your product name" required>
+            </div>
+            <div>
+                <label for="product-description">Description:</label>
+                <textarea id="product-description" name="description" placeholder="Describe your product" required></textarea>
+            </div>
+            <div>
+                <label for="product-price">Price (in INR):</label>
+                <input type="number" id="product-price" name="price" placeholder="Enter the price" required>
+            </div>
+            <div>
+                <label for="product-image">Upload Images:</label>
+                <input type="file" id="product-image" name="image" required>
+            </div>
+            <div>
+                <label for="product-category">Category:</label>
+                <select id="product-category" name="category" required>
+                    <option value="Mobile">Mobile</option>
+                    <option value="electronics">Electronics</option>
+                    <option value="fashion">Fashion</option>
+                    <option value="home">Home & Furniture</option>
+                    <option value="vehicles">Vehicles</option>
+                    <option value="others">Others</option>
+                </select>
+            </div>
+            <div>
+                <label for="product-condition">Condition:</label>
+                <select id="product-condition" name="condition" required>
+                    <option value="new">New</option>
+                    <option value="used">Used</option>
+                    <option value="refurbished">Refurbished</option>
+                </select>
+            </div>
+            <div>
+                <label for="product-location">Location:</label>
+                <input type="text" id="product-location" name="location" placeholder="Enter your location" required>
+            </div>
+            <div>
+                <label for="price-negotiable">Price Negotiable:</label>
+                <select id="price-negotiable" name="price_negotiable" required>
+                    <option value="yes">Yes</option>
+                    <option value="no">No</option>
+                </select>
+            </div>
+            <div>
+                <label for="product-brand">Brand:</label>
+                <input type="text" id="product-brand" name="brand" placeholder="Enter the brand" required>
+            </div>
+            <button type="submit">Post Ad</button>
+        </form>
+    </main>
+</body>
+</html>
