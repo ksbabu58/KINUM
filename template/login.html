@@ -114,9 +114,23 @@
                 <div class="g-recaptcha" data-sitekey="6LdbBY0qAAAAAEB0ZNNT9jlTNeF2xDnMNdy-YDfm"></div>  <!-- Replace YOUR_SITE_KEY with actual site key -->
                 <button type="submit">Login</button><br>
             </form>
+
             <form action="{% url 'register' %}" method="get">
                 <button type="submit">Register</button>
             </form>
+
+            <div style="text-align: center; margin: 10px 0;">
+                <a href="{% url 'password_reset' %}" style="color: #007bff; text-decoration: none;">Forgot Password?</a>
+            </div>
+
+            <div style="text-align: center; margin-top: 10px;">
+                <p style="margin: 10px 0; color: #999;">OR</p>
+        
+                    <button type="submit">
+                        Continue with Google
+                    </button>
+                </form>
+            </div>
         </div>
     </div>
 </body>

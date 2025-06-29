@@ -6,10 +6,9 @@ from django.contrib.auth import authenticate
 from django.contrib.auth import login as auth_login
 from django.contrib import messages
 from .models import UserProfile
-
+import requests
 # Create your views here.
 from django.shortcuts import render
-import requests
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth import authenticate, login as auth_login
@@ -100,8 +99,68 @@ def logout_view(request):
 def index_veiw(request):
     return render(request, 'index.html')
 
+from django.contrib.auth.models import User
+from django.contrib import messages
+from django.shortcuts import render, redirect
+from django.contrib.auth.hashers import make_password
+from .models import UserProfile  # Assuming dob is stored in a related model
+from django.shortcuts import render
+from django.contrib.auth.models import User  # Assuming you're using Django's default User model
+from django.shortcuts import render
+from .models import UserProfile
 
+def reset_pw(request):
+    if request.method == 'POST': 
+        uname = request.POST['username']
+        dob = request.POST['date_of_birth']
+        new_pass = request.POST.get('password1')
+        confirm_pass = request.POST.get('password2')
+        # Check if the username and date of birth match
+        try:
+            user_profile = UserProfile.objects.get(user__username=uname)  # Retrieve UserProfile by username
+            if str(user_profile.dob) == dob:  # Compare dob (convert to string for match)
+                # Success: User found and DOB matches
+                if new_pass != confirm_pass:
+                    messages.error(request, "Passwords do not match.")
+                    return redirect('password_reset')
+                elif new_pass== confirm_pass:
+                    user_profile.user.password = make_password(new_pass)  # Hash the password
+                    user_profile.user.save()  # Save the changes to the User model
+                    return render(request, 'index.html', {'user_profile': user_profile})
+            else:
+                # DOB does not match
+                return render(request, 'forgot.html', {'error': 'Date of birth does not match!'})
+        except UserProfile.DoesNotExist:
+            # UserProfile not found for the given username
+            return render(request, 'forgot.html', {'error': 'User not found!'})
 
+    # Render the reset password page if GET method
+    return render(request, 'forgot.html')
+
+def profile_view(request):
+    return render(request,'profile.html')
+
+from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
+from .models import UserProfile  # Import your UserProfile model
+
+@login_required
+def profile_edit(request):
+    if request.method == 'POST':
+        user_profile = request.user.userprofile  # Get the logged-in user's profile
+        user_profile.f_name = request.POST.get('first_name')
+        user_profile.l_name = request.POST.get('last_name')
+        user_profile.phone = request.POST.get('mobile')
+        user_profile.dob = request.POST.get('dob')
+
+        # Handle file upload for profile picture
+        if 'profile_pic' in request.FILES:
+            user_profile.profile_pic = request.FILES['profile_pic']
+        
+        user_profile.save()  # Save changes to the database
+        return redirect('profile')  # Redirect to a profile view or any other page
+
+    return render(request, 'edit_profile.html')  # Render the form template
 
 '''
 def home(request):

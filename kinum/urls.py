@@ -18,10 +18,14 @@ from django.contrib import admin
 from django.urls import path, include
 from django.urls import path
 from signin.views import *
+
 from sell.views import *
 # urls.py
 from django.conf import settings
 from django.conf.urls.static import static
+from sell.views import product_detail
+
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('login/',login_view,name='login'),
@@ -32,10 +36,21 @@ urlpatterns = [
     path('sell/add/',add_product,name='add_product'),
     path('logout/', logout_view, name='logout'),
     path('cars/',cars_category,name='cars_category'),
-    path('furniture/',furniture,name='furniture_category'),
+    path('furniture/',furniture,name='furniture'),
+    path('realestate/',realestate,name='realestate'),
     path('phones/', phones_category_view, name='phones_category'), 
-    path('laptops/',laptop,name='laptops_category'),
-    path('tablets/',tablet, name='tablets_category'),
+    path('electronics/',electronics,name='electronics'),
+    path('vehicles/',vehicles, name='vehicles'),
     path('product/<int:product_id>/', product_detail, name='product_detail'),
     path('checkout/<int:product_id>/', checkout_view, name='checkout'),
+    path('password_reset/',reset_pw,name='password_reset'),
+    path('datails/<int:product_id>/', detail_view, name='detail_view'),
+    path('wishlist/toggle/',toggle_wishlist, name='toggle_wishlist'),
+    path('wishlist/',wishlist, name='wishlist'),
+    path('profile/',profile_view,name='profile'),
+    path('add_to_cart/<int:product_id>/', add_to_cart, name='add_to_cart'),
+    path('cart/', cart_view, name='cart_view'),
+    path('search/', search_products, name='search_products'),
+    path('edit/', profile_edit, name='edit_profile'),
+
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

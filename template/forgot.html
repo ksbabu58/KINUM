@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Reset Password</title>
+     
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #f1f3f6;
+            margin: 0;
+            padding: 0;
+        }
+
+        .forgot-container {
+            width: 100%;
+            max-width: 400px;
+            margin: 100px auto;
+            background: #fff;
+            padding: 30px 40px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            border-radius: 8px;
+        }
+
+        .forgot-container h2 {
+            margin-bottom: 20px;
+            color: #2874f0;
+            text-align: center;
+        }
+
+        .forgot-container form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .forgot-container label {
+            margin-bottom: 5px;
+            font-weight: 500;
+            color: #333;
+        }
+
+        .forgot-container input {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            font-size: 16px;
+        }
+
+        .forgot-container button {
+            padding: 12px;
+            background-color: #2874f0;
+            border: none;
+            color: white;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .forgot-container button:hover {
+            background-color: #185ec7;
+        }
+
+        .forgot-container .back-login {
+            margin-top: 15px;
+            text-align: center;
+        }
+
+        .forgot-container .back-login a {
+            color: #2874f0;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .forgot-container .back-login a:hover {
+            text-decoration: underline;
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="forgot-container">
+    {% if error %}
+    <div style="background-color: #ffdddd; padding: 10px; border: 1px solid #f44336; color: #d8000c; margin-bottom: 15px; border-radius: 5px;">
+        <strong>Error:</strong> {{ error }}
+    </div>
+    {% endif %}
+
+    <h2>Forgot Password</h2>
+    <form method="POST" action="{% url 'password_reset' %}">
+        {% csrf_token %}
+        <label for="username">Username</label>
+        <input type="text" id="username" name="username" placeholder="Enter your username" required>
+
+        <label for="dob">Date of Birth</label>
+        <input type="date" id="dob" name="date_of_birth" required>
+
+        <label for="password1">New Password</label>
+        <input type="password" id="password1" name="password1" placeholder="Enter new password" required>
+
+        <label for="password2">Re-enter New Password</label>
+        <input type="password" id="password2" name="password2" placeholder="Confirm new password" required>
+
+        <button type="submit">Submit</button>
+    </form>
+    <div class="back-login">
+        <a href="{% url 'login' %}"><i class="fas fa-arrow-left"></i> Back to Login</a>
+    </div>
+</div>
+
+</body>
+</html>

@@ -5,6 +5,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Phones</title>
+    {% csrf_token %}
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <style>
         /* Reset and Base Styles */
         * {
@@ -18,6 +21,19 @@
             background-color: #F1F1F1;
             color: #333;
             line-height: 1.6;
+            height: 100%;
+            flex-direction: column;
+        }
+
+        .page-wrapper {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh; /* Minimum full screen height */
+        }
+
+/* Main content stretches to fill space between header and footer */
+        main {
+            flex: 1;
         }
 
         /* Header */
@@ -72,7 +88,7 @@
         }
 
         .nav-links a:hover {
-            color: #4CAF50;
+            color: #007bff;
         }
 
         .dropdown {
@@ -101,7 +117,7 @@
         }
 
         .dropdown-content a:hover {
-            background-color: #ddd;
+            color: #007bff;
         }
 
         /* Search Bar */
@@ -143,6 +159,7 @@
             justify-content: center;
             gap: 70px;
             padding: 20px;
+            height: 100%;
         }
 
         .product {
@@ -153,7 +170,43 @@
             text-align: center;
             width: 300px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
+            position: relative; /* Needed for wishlist icon */
+    }
+
+        .wishlist-icon {
+            position: absolute;
+            top: 15px;
+            right: 15px; 
+            font-size: 22px; 
+            text-decoration: none;
+            color: #e1e4e7;
+            transition: color 0.3s ease; /* Smooth transition effect */
+}
+
+        .wishlist-icon:hover {
+            color: rgb(237, 9, 55); 
+    /* Change to blue when hovered */
+}
+
+.wishlist-icon.active {
+    color: red;
+}
+
+        .share-icon {
+            color: #e1e4e7; /* Default icon color */
+            font-size: 22px; /* Ensure it's visible */
+            text-decoration: none; /* Remove underline */
+            position: absolute;
+            top: 50px;
+            right: 15px;
+            transition: color 0.3s ease; /* Smooth transition for hover */
+}
+
+        .share-icon:hover {
+            color: #1E88E5; /* Change to blue when hovered */
+}
+
+
         .product img { width: 100%; height: auto; max-width: 250px; max-height: 250px; object-fit: cover; /* Ensures the image fits within the box */ border-radius: 10px; margin-bottom: 10px; }
 
         .product h2 {
@@ -170,8 +223,7 @@
             margin-top: 10px;
             padding: 10px 15px;
             font-size: 16px;
-            background-color: #4CAF50;
-            color: white;
+            background-color: #f0f0f0;
             border: none;
             border-radius: 5px;
             cursor: pointer;
@@ -179,15 +231,18 @@
         }
 
         .product button:hover {
-            background-color: #45a049;
+            background-color: #007bff;
+            color: white;
         }
 
         /* Footer Section */
+
         footer {
             background-color: #333;
             color: white;
             padding: 30px 20px;
             text-align: center;
+            margin-top: auto;
         }
 
         .footer-container {
@@ -227,6 +282,7 @@
     </style>
 </head>
 <body>
+    <div class="page-wrapper">
     <header>
         <div class="header-container">
             <div class="logo-container">
@@ -247,11 +303,13 @@
                     </li>
                     <li><a href="{% url 'sell' %}">Sell</a></li>
                     <li class="dropdown">
-                        <a href="#">Login</a>
+                        <a href="#">Account</a>
                         <div class="dropdown-content">
-                            <a href="#">My Profile</a>
-                            <a href="#">Register</a>
+                            <a href="#"><i class="fas fa-user"></i> My Profile</a>
+                            <a href="#"><i class="fas fa-cart-plus"></i> Add to Cart</a>
+                            <a href="{% url 'wishlist' %}"><i class="fas fa-heart"></i> Wishlist</a>
                             <a href="#">Orders</a>
+                            <a href="{% url 'logout' %}">Logout</a>
                         </div>
                     </li>
                 </ul>
@@ -263,23 +321,116 @@
         </div>
     </header>
 
-    <section class="Items">
-        <h1>{{ product.category}}</h1>
-    </section>
     <main>
+        <section class="Items">
+            <h1>{{ product.category }}</h1>
+        </section>
         <div class="product-list">
             {% for product in products %}
-                <div class="product">
-                    <img src="{{ product.image.url }}" alt="{{ product.title }} Image">
-                    <h2>{{ product.title }}</h2>
-                    <p>Price: ${{ product.price }}</p>
-                    <a href="{% url 'product_detail' product.id %}"><button>Buy</button></a>
-                </div>
-            {% endfor %}
-        </div>        
+            <div class="product">
+                <!-- Display Media -->
+                {% if product.media.all %}
+                <img src="{{ product.media.all.0.file.url }}" alt="{{ product.title }}" style="width: 150px;">
+            {% endif %}
+                <!-- Product Info -->
+                <h2>
+                    <a href="{% url 'detail_view' product.id %}">{{ product.title }}</a>
+                </h2>
+                <p>Price: INR.{{ product.price }}</p>
+        
+                <!-- Wishlist Icon -->
+                <i class="wishlist-icon" data-product-id="{{ product.id }}">&#10084;</i>
+        
+                <!-- Share Button -->
+                <i class="fas fa-share share-icon" data-url="{% url 'product_detail' product.id %}"></i>
+        
+                <!-- Add to Cart -->
+                <a href="{% url 'add_to_cart' product.id %}"><button type="submit">Add to Cart</button></a>
+        
+                <!-- Buy Button -->
+                <a href="{% url 'product_detail' product.id %}"><button>Buy</button></a>
+            </div>
+        {% endfor %}
+      
+
+        </div>
     </main>
-    <!-- Footer Section -->
-    <footer>
+    
+                <script>
+                    // Utility function to get the CSRF token from cookies
+                    function getCookie(name) {
+                        let cookieValue = null;
+                        if (document.cookie && document.cookie !== '') {
+                            const cookies = document.cookie.split(';');
+                            for (let i = 0; i < cookies.length; i++) {
+                                const cookie = cookies[i].trim();
+                                // Does this cookie string begin with the name we want?
+                                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                                    break;
+                                }
+                            }
+                        }
+                        return cookieValue;
+                    }
+                    
+                    document.addEventListener('DOMContentLoaded', function () {
+                        const csrftoken = getCookie('csrftoken');
+                    
+                        // Select all wishlist icons on the page
+                        document.querySelectorAll('.wishlist-icon').forEach(icon => {
+                            icon.addEventListener('click', function() {
+                                const productId = icon.getAttribute('data-product-id');
+                    
+                                fetch("{% url 'toggle_wishlist' %}", {
+                                    method: 'POST',
+                                    headers: {
+                                        'Content-Type': 'application/json',
+                                        'X-CSRFToken': csrftoken
+                                    },
+                                    body: JSON.stringify({ product_id: productId })
+                                })
+                                .then(response => response.json())
+                                .then(data => {
+                                    if (data.in_wishlist) {
+                                        // Mark as active (you can style this in CSS)
+                                        icon.classList.add('active');
+                                    } else {
+                                        // Remove active styling
+                                        icon.classList.remove('active');
+                                    }
+                                })
+                                .catch(error => {
+                                    console.error('Error:', error);
+                                });
+                            });
+                        });
+                    });
+                    </script>
+                      
+                      <script>
+                        document.addEventListener("DOMContentLoaded", function() {
+                            document.querySelectorAll(".share-icon").forEach(icon => {
+                                icon.addEventListener("click", function() {
+                                    const shareUrl = this.getAttribute("data-url");
+                        
+                                    if (navigator.share) {
+                                        navigator.share({
+                                            title: 'Check out this product!',
+                                            url: window.location.origin + shareUrl
+                                        }).catch(error => console.log('Sharing failed', error));
+                                    } else {
+                                        // Fallback for browsers without Web Share API
+                                        alert("Copy this link to share: " + window.location.origin + shareUrl);
+                                    }
+                                });
+                            });
+                        });
+                        </script>
+                    
+        </main>
+        <footer>
+        
         <div class="footer-container">
             <div class="footer-links">
                 <ul>
@@ -299,8 +450,9 @@
             </div>
         </div>
         <div class="footer-info">
-            <p>&copy; 2024 Marketplace. All rights reserved.</p>
-        </div>
+            <p>&copy; 2025 Marketplace. All rights reserved.</p>
+        </div> 
     </footer>
+</div>
 </body>
 </html>

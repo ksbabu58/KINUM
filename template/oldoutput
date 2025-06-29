@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phones</title>
+    <style>
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #F1F1F1;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* Header */
+        header {
+            background-color: #FFFFFF;
+            padding: 10px 0;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo-img {
+            width: 140px;
+            height: 50px;
+            margin-right: 10px;
+        }
+
+        .logo-container h1 {
+            font-size: 28px;
+            color: #2C3E50;
+        }
+
+        .navigation .nav-links {
+            list-style: none;
+            display: flex;
+            gap: 20px;
+        }
+
+        .nav-links li {
+            position: relative;
+        }
+
+        .nav-links a {
+            color: #1E88E5;
+            text-decoration: none;
+            font-size: 18px;
+            padding: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: #4CAF50;
+        }
+
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f1f1f1;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+            z-index: 1;
+        }
+
+        .dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #ddd;
+        }
+
+        /* Search Bar */
+        .search-bar {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .search-bar input {
+            padding: 10px;
+            font-size: 16px;
+            width: 250px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+
+        .search-bar button {
+            padding: 10px;
+            background-color: #FF4D4D;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .search-bar button:hover {
+            background-color: #e60000;
+        }
+
+        .Phones {
+            text-align: center;
+        }
+
+        .product-list {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 70px;
+            padding: 20px;
+        }
+
+        .product {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 13px;
+            padding: 50px 20px;
+            text-align: center;
+            width: 300px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .product img { width: 100%; height: auto; max-width: 250px; max-height: 250px; object-fit: cover; /* Ensures the image fits within the box */ border-radius: 10px; margin-bottom: 10px; }
+
+        .product h2 {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+        .product p {
+            font-size: 16px;
+            color: #555;
+        }
+
+        .product button {
+            margin-top: 10px;
+            padding: 10px 15px;
+            font-size: 16px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .product button:hover {
+            background-color: #45a049;
+        }
+
+        /* Footer Section */
+        footer {
+            background-color: #333;
+            color: white;
+            padding: 30px 20px;
+            text-align: center;
+        }
+
+        .footer-container {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .footer-links ul {
+            list-style: none;
+            display: flex;
+            gap: 20px;
+        }
+
+        .footer-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+        }
+
+        .footer-social ul {
+            list-style: none;
+            display: flex;
+            gap: 20px;
+        }
+
+        .footer-social a {
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+        }
+
+        .footer-info p {
+            font-size: 14px;
+        }
+
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo-container">
+                <img src="{% static 'images/logo.jpeg' %}" alt="Logo" class="logo-img">
+           
+            </div>
+            <nav class="navigation">
+                <ul class="nav-links">
+                    <li><a href="{% url 'index' %}">Home</a></li>
+                    <li class="dropdown">
+                        <a href="#">Categories</a>
+                        <div class="dropdown-content">
+                            <a href="#">Electronics</a>
+                            <a href="#">Vehicles</a>
+                            <a href="#">Furniture</a>
+                            <a href="#">Real Estate</a>
+                        </div>
+                    </li>
+                    <li><a href="{% url 'sell' %}">Sell</a></li>
+                    <li class="dropdown">
+                        <a href="#">Login</a>
+                        <div class="dropdown-content">
+                            <a href="#">My Profile</a>
+                            <a href="#">Register</a>
+                            <a href="#">Orders</a>
+                        </div>
+                    </li>
+                </ul>
+            </nav>
+            <div class="search-bar">
+                <input type="text" placeholder="Search...">
+                <button>Search</button>
+            </div>
+        </div>
+    </header>
+
+    <section class="Items">
+        <h1>{{ product.category}}</h1>
+    </section>
+    <main>
+        <div class="product-list">
+            {% for product in products %}
+                <div class="product">
+                    <img src="{{ product.image.url }}" alt="{{ product.title }} Image">
+                    <h2>{{ product.title }}</h2>
+                    <p>Price: ${{ product.price }}</p>
+                    <a href="{% url 'product_detail' product.id %}"><button>Buy</button></a>
+                </div>
+            {% endfor %}
+        </div>        
+    </main>
+    <!-- Footer Section -->
+    <footer>
+        <div class="footer-container">
+            <div class="footer-links">
+                <ul>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Contact</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Terms of Service</a></li>
+                </ul>
+            </div>
+            <div class="footer-social">
+                <ul>
+                    <li><a href="#">Facebook</a></li>
+                    <li><a href="#">Twitter</a></li>
+                    <li><a href="#">Instagram</a></li>
+                    <li><a href="#">LinkedIn</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-info">
+            <p>&copy; 2024 Marketplace. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>

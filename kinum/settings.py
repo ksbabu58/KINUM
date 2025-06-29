@@ -12,7 +12,6 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 #import mysql
-import MySQLdb
 import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -23,6 +22,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-^d)-cuw(-*nm6qm8iyq+%8xlvtq=_tfsw)2z4(b&gl*e4x580%'
+
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',
+)
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -79,15 +83,11 @@ WSGI_APPLICATION = 'kinum.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'register',
-        'PASSWORD': 'Krishna@5058',
-        'USER': 'ksbabu',
-        'HOST': 'localhost',
-        'PORT' : '3306',
-
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / "db.sqlite3",
     }
 }
+
 
 
 # Password validation
@@ -136,8 +136,12 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # settings.py
-MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
+MEDIA_URL = '/media/'
+
+
+
+
 # settings.py
 RECAPTCHA_SITE_KEY = '6LdbBY0qAAAAAEB0ZNNT9jlTNeF2xDnMNdy-YDfm'
 RECAPTCHA_SECRET_KEY = '6LdbBY0qAAAAAIeSM6vqODtiCYcpH-ljdGJNkCXN'

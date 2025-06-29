@@ -1,0 +1,224 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>My Wishlist - Flipkart Style</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #f1f3f6;
+        }
+
+        header {
+            background-color: #2874f0;
+            padding: 15px 30px;
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+        }
+
+        .container {
+            display: flex;
+            margin-top: 20px;
+        }
+
+        .sidebar {
+            width: 200px;
+            background-color: white;
+            padding: 20px;
+            height: calc(100vh - 60px);
+            box-shadow: 2px 0 5px rgba(0,0,0,0.05);
+        }
+
+        .sidebar a {
+            display: block;
+            padding: 10px 0;
+            color: #333;
+            text-decoration: none;
+        }
+
+        .sidebar a:hover {
+            color: #2874f0;
+        }
+
+        .wishlist {
+            flex: 1;
+            padding: 20px;
+        }
+
+        .product-card {
+            background-color: white;
+            border-radius: 6px;
+            padding: 20px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 1px 5px rgba(0,0,0,0.1);
+        }
+
+        .product-image img {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            margin-right: 20px;
+            border-radius: 4px;
+        }
+
+        .product-details {
+            flex: 1;
+        }
+
+        .product-details h3 {
+            margin: 0 0 10px;
+            font-size: 18px;
+        }
+
+        .product-details p {
+            margin: 4px 0;
+            color: #666;
+        }
+
+        .product-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .product-actions button {
+            background-color: #f0f0f0;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .product-actions button:hover {
+            background-color: #2874f0;
+            color: white;
+        }
+
+        
+                /* Footer Section */
+
+        footer {
+            background-color: #333;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            margin-top: auto;
+        }
+
+        
+
+        .footer-container {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .footer-links ul {
+            list-style: none;
+            display: flex;
+            gap: 20px;
+        }
+
+        .footer-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+        }
+
+        .footer-social ul {
+            list-style: none;
+            display: flex;
+            gap: 20px;
+        }
+
+        .footer-social a {
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+        }
+
+        .footer-info p {
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <a href="javascript:history.back()" style="color: white; text-decoration: none; margin-right: 15px;">
+        <i class="fas fa-arrow-left"></i>
+    </a>
+    My Wishlist
+</header>
+
+<div class="container">
+    <div class="sidebar">
+        <a href="#"><i class="fas fa-user"></i>  My Profile</a>
+        <a href="#"><i class="fas fa-cart-plus"></i>  Add to Cart</a>
+        <a href="#">Orders</a>
+        <a href="{% url 'logout' %}">Logout</a>
+    </div>
+    <div class="wishlist">
+
+        {% if wishlist %}
+            {% for product in wishlist %}
+            <div class="product-card">
+                <div class="product-image">
+                    <img src="{{ product.image.url }}" alt="{{ product.title }}">
+                </div>
+                <div class="product-details">
+                    <h3>{{ product.title }}</h3>
+                    <p>Price: ₹{{ product.price }}</p>
+                </div>
+                <div class="product-actions">
+                    <form method="post" action="{% url 'add_to_cart' product.id %}">
+                        {% csrf_token %}
+                        <button type="submit"><i class="fas fa-cart-plus"></i> Add to Cart</button>
+                    </form>
+                    <form method="post" action="">
+                        {% csrf_token %}
+                        <button type="submit"><i class="fas fa-trash-alt"></i> Remove</button>
+                    </form>
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <p>You have no items in your wishlist.</p>
+        {% endif %}
+        
+    </div>
+</div>
+<footer>
+        
+    <div class="footer-container">
+        <div class="footer-links">
+            <ul>
+                <li><a href="#">About Us</a></li>
+                <li><a href="#">Contact</a></li>
+                <li><a href="#">Privacy Policy</a></li>
+                <li><a href="#">Terms of Service</a></li>
+            </ul>
+        </div>
+        <div class="footer-social">
+            <ul>
+                <li><a href="#">Facebook</a></li>
+                <li><a href="#">Twitter</a></li>
+                <li><a href="#">Instagram</a></li>
+                <li><a href="#">LinkedIn</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="footer-info">
+        <p>&copy; 2025 Marketplace. All rights reserved.</p>
+    </div> 
+</footer>
+</body>
+</html>

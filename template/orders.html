@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>My Orders - Flipkart Style</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #f1f3f6;
+        }
+
+        header {
+            background-color: #2874f0;
+            padding: 15px 30px;
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+        }
+
+        .container {
+            display: flex;
+            margin-top: 20px;
+        }
+
+        .sidebar {
+            width: 200px;
+            background-color: white;
+            padding: 20px;
+            height: calc(100vh - 60px);
+            box-shadow: 2px 0 5px rgba(0,0,0,0.05);
+        }
+
+        .sidebar a {
+            display: block;
+            padding: 10px 0;
+            color: #333;
+            text-decoration: none;
+        }
+
+        .sidebar a:hover {
+            color: #2874f0;
+        }
+
+        .orders {
+            flex: 1;
+            padding: 20px;
+        }
+
+        .tabs {
+            margin-bottom: 20px;
+        }
+
+        .tabs button {
+            background-color: white;
+            border: 1px solid #ccc;
+            margin-right: 10px;
+            padding: 8px 16px;
+            cursor: pointer;
+            border-radius: 20px;
+            transition: 0.3s;
+        }
+
+        .tabs button:hover {
+            background-color: #2874f0;
+            color: white;
+            border-color: #2874f0;
+        }
+
+        .order-card {
+            background-color: white;
+            border-radius: 6px;
+            padding: 20px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 1px 5px rgba(0,0,0,0.1);
+        }
+
+        .order-image img {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            margin-right: 20px;
+            border-radius: 4px;
+        }
+
+        .order-details {
+            flex: 1;
+        }
+
+        .order-details h3 {
+            margin: 0 0 10px;
+            font-size: 18px;
+        }
+
+        .order-details p {
+            margin: 4px 0;
+            color: #666;
+        }
+
+        .order-status {
+            font-weight: bold;
+            color: green;
+        }
+
+        .order-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .order-actions button {
+            background-color: #f0f0f0;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .order-actions button:hover {
+            background-color: #2874f0;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <a href="javascript:history.back()" style="color: white; text-decoration: none; margin-right: 15px;">
+        <i class="fas fa-arrow-left"></i>
+    </a>
+    My Orders
+</header>
+
+<div class="container">
+    <div class="sidebar">
+        <a href="#"><i class="fas fa-user"></i>  My Profile</a>
+        <a href="#"><i class="fas fa-cart-plus"></i>  Add to Cart</a>
+        <a href="#"><i class="fas fa-heart"></i>  Wishlist</a>
+        <a href="{% url 'logout' %}">Logout</a>
+    </div>
+    <div class="orders">
+
+        <div class="tabs">
+            <button>All</button>
+            <button>Delivered</button>
+            <button>Cancelled</button>
+            <button>On the Way</button>
+        </div>
+
+        {% for order in orders %}
+        <div class="order-card">
+            <div class="order-image">
+                <img src="{{ order.product.image.url }}" alt="{{ order.product.title }}">
+            </div>
+            <div class="order-details">
+                <h3>{{ order.product.title }}</h3>
+                <p>
+                    {% if order.status == 'Delivered' %}
+                        Delivered on: <strong>{{ order.delivered_date }}</strong>
+                    {% elif order.status == 'Cancelled' %}
+                        Cancelled on: <strong>{{ order.cancelled_date }}</strong>
+                    {% else %}
+                        Expected Delivery: <strong>{{ order.expected_delivery }}</strong>
+                    {% endif %}
+                </p>
+
+                {{ order.status }}
+            </p>
+            </div>
+            <div class="order-actions">
+                <form method="get" action="{% url 'download_invoice' order.id %}">
+                    <button type="submit">Download Invoice</button>
+                </form>
+                <form method="get" action="{% url 'rate_product' order.product.id %}">
+                    <button type="submit">Rate Product</button>
+                </form>
+            </div>
+        </div>
+        {% empty %}
+        <p>No orders found.</p>
+        {% endfor %}
+
+    </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>My Profile</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #f1f3f6;
+        }
+
+        header {
+            background-color: #2874f0;
+            padding: 15px 30px;
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .container {
+            display: flex;
+            margin: 20px auto;
+        }
+
+        .sidebar {
+            width: 200px;
+            background-color: white;
+            padding: 20px;
+            height: calc(100vh - 60px);
+            box-shadow: 2px 0 5px rgba(0,0,0,0.05);
+        }
+
+        .sidebar a {
+            display: block;
+            padding: 10px 0;
+            color: #333;
+            text-decoration: none;
+        }
+
+        .sidebar a:hover {
+            color: #2874f0;
+        }
+
+        .profile-card {
+            background-color: white;
+            border-radius: 6px;
+            padding: 30px;
+            margin-left: 30px;
+            box-shadow: 0 1px 5px rgba(0,0,0,0.1);
+            flex: 1;
+        }
+
+        .profile-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .profile-pic {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 20px;
+            border: 2px solid #ccc;
+        }
+
+        .name {
+            font-size: 22px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .profile-info p {
+            margin: 10px 0;
+            font-size: 16px;
+        }
+
+        .edit-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #2874f0;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            margin-top: 20px;
+        }
+
+        .edit-button:hover {
+            background-color: #0a58ca;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    My Profile
+</header>
+
+<div class="container">
+    <div class="sidebar">
+        <a href="{% url 'profile' %}">My Profile</a>
+        <a href="">My Orders</a>
+        <a href="{% url 'wishlist' %}">Wishlist</a>
+        <a href="{% url 'logout' %}">Logout</a>
+    </div>
+
+    <div class="profile-card">
+        <div class="profile-header">
+            <img src="{{ user.userprofile.profile_pic.url }}" alt="Profile Picture" class="profile-pic">
+            <div class="name">{{ user.userprofile.f_name }} {{ user.userprofile.l_name }}</div>
+        </div>
+
+        <h2>Personal Information</h2>
+        <div class="profile-info">
+            <p><strong>Username:</strong> {{ user.username }}</p>
+            <p><strong>Email:</strong> {{ user.email }}</p>
+            <p><strong>Mobile:</strong> {{ user.userprofile.phone }}</p>
+            <p><strong>Date of Birth:</strong> {{ user.userprofile.dob }}</p>
+        </div>
+        <a href="{% url 'edit_profile' %}" class="edit-button">Edit Profile</a>
+    </div>
+</div>
+
+</body>
+</html>
